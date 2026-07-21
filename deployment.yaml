@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlops-api-deployment
+  labels:
+    app: mlops-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mlops-api
+  template:
+    metadata:
+      labels:
+        app: mlops-api
+    spec:
+      containers:
+      - name: mlops-api
+        image: mlops-api:v1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+        env:
+        - name: MLFLOW_TRACKING_URI
+          value: "https://dagshub.com/JLewko98/mlops-quickstart.mlflow"
+          name: MLFLOW_TRACKING_USERNAME
+          value: "lewko98"
+        - name: MLFLOW_TRACKING_PASSWORD
+          value: "f8cbde8a0799d42f9ff9fc1829add60e8d1313d2"
+        - name: MLFLOW_RUN_ID
+          value: "c7f26cd19fe3412083d12dcccc9b52db"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlops-api-service
+spec:
+  type: NodePort
+  selector:
+    app: mlops-api
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+      nodePort: 30080
