@@ -4,3 +4,6 @@ numpy
 fastapi
 uvicorn
 pydantic
+mlflow
+dagshub
+pandas
