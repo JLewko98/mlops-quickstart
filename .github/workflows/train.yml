@@ -28,8 +28,9 @@ jobs:
 
       - name: Run model training
         env:
-          MLFLOW_TRACKING_URI: "https://dagshub.com/lewko98/mlops-quickstart.mlflow"
-          MLFLOW_TRACKING_USERNAME: "lewko98"
+          DAGSHUB_USER_TOKEN: ${{ secrets.DAGSHUB_PAT_TOKEN }}
+          MLFLOW_TRACKING_URI: "https://dagshub.com/JLewko98/mlops-quickstart.mlflow"
+          MLFLOW_TRACKING_USERNAME: "JLewko98"
           MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_PAT_TOKEN }}
         run: |
           python train.py

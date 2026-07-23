@@ -8,13 +8,18 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 def main():
-    # 1. Initialize DagsHub repository integration
-    # Reads DAGSHUB_USER_TOKEN or MLFLOW_TRACKING_PASSWORD from environment variables
+    # 1. Retrieve credentials from environment
     repo_owner = os.getenv("DAGSHUB_REPO_OWNER", "JLewko98")
     repo_name = os.getenv("DAGSHUB_REPO_NAME", "mlops-quickstart")
-    
+    token = os.getenv("DAGSHUB_USER_TOKEN") or os.getenv("MLFLOW_TRACKING_PASSWORD")
+
     print(f"--> Initializing DagsHub tracking for {repo_owner}/{repo_name}...")
-    dagshub.init(repo_owner=repo_owner, repo_name=repo_name, mlflow=True)
+    
+    # Pass token explicitly to avoid triggering interactive browser OAuth in CI/CD
+    if token:
+        dagshub.init(repo_owner=repo_owner, repo_name=repo_name, mlflow=True, token=token)
+    else:
+        dagshub.init(repo_owner=repo_owner, repo_name=repo_name, mlflow=True)
 
     # 2. Enable automatic logging for scikit-learn
     mlflow.sklearn.autolog(log_models=True)
@@ -35,14 +40,7 @@ def main():
         print(f"==================================================\n")
 
         # Train model
-        n_estimators = 100
-        max_depth = 5
-        
-        model = RandomForestClassifier(
-            n_estimators=n_estimators, 
-            max_depth=max_depth, 
-            random_state=42
-        )
+        model = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=42)
         model.fit(X_train, y_train)
 
         # Evaluate model
