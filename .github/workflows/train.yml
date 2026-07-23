@@ -26,11 +26,11 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Run model training
+     - name: Run model training
         env:
-          DAGSHUB_USER_TOKEN: ${{ secrets.DAGSHUB_PAT_TOKEN }}
+          DAGSHUB_USER_TOKEN: ${{ secrets.DAGSHUB_PAT }}
           MLFLOW_TRACKING_URI: "https://dagshub.com/JLewko98/mlops-quickstart.mlflow"
           MLFLOW_TRACKING_USERNAME: "JLewko98"
-          MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_PAT_TOKEN }}
+          MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_PAT }}
         run: |
           python train.py
