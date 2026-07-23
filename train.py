@@ -9,14 +9,14 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 def main():
-    # 1. Retrieve credentials from environment
-    repo_owner = os.getenv("DAGSHUB_REPO_OWNER", "JLewko98")
+    # 1. Retrieve credentials from environment (Use lowercase 'lewko98' as user owner)
+    repo_owner = os.getenv("DAGSHUB_REPO_OWNER", "lewko98")
     repo_name = os.getenv("DAGSHUB_REPO_NAME", "mlops-quickstart")
     token = os.getenv("DAGSHUB_USER_TOKEN") or os.getenv("MLFLOW_TRACKING_PASSWORD")
 
     print(f"--> Initializing DagsHub tracking for {repo_owner}/{repo_name}...")
     
-    # Pre-register app token into DagsHub auth cache to bypass browser OAuth
+    # Pre-register app token into DagsHub auth cache
     if token:
         dagshub.auth.add_app_token(token)
     else:
